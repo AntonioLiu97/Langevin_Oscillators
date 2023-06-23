@@ -15,6 +15,6 @@ d\phi =\omega dt+ k\,sin(F(t)-\phi) +dw_{\phi}
 $$
 
 $F(t)$ is a customizable drive function.
-In both models, odeint is used to integrate in the absence of noise, otherwise Euler–Maruyama method is used.
+In both models, odeint is used to integrate in the absence of noise. Otherwise Euler–Maruyama method is used to integrate SDEs.
 
 ![example](example.png)
