@@ -3,7 +3,7 @@ Lightweight power spectrum plotter included
 
 ### Harmonic Oscillator Model
 $$\begin{align}
-dv &= drive_func(t)dt - \frac{k}{m}x(t) dt-\frac{\gamma}{m} v(t) dt+dW_v\\
+dv &= F(t)dt - \frac{k}{m}x(t) dt-\frac{\gamma}{m} v(t) dt+dW_v\\
 dx &= v(t)dt + dW_x
 \end{align}$$
 
@@ -14,6 +14,7 @@ d\phi =\omega dt+ k\,sin(F(t)-\phi) +dw_{\phi}
 \end{align}
 $$
 
+$F(t)$ is a customizable drive function.
 In both models, odeint is used to integrate in the absence of noise, otherwise Euler–Maruyama method is used.
 
 ![example](example.png)
