@@ -5,7 +5,7 @@ from scipy import signal
 
 class Harmonic_Oscillator:
 
-    def __init__(self, F, gamma, m = 1, k = 1, sigma_x = 0, sigma_v = 0):
+    def __init__(self, F, gamma, m = 1, k = 1, sigma_x = 0, sigma_v = 0, c_drive = 1):
         '''
         Defines a driven, damped harmonic oscillator:
             F(t) - kx - gamma dx/dt = d^2x/dt^2 * m
@@ -21,6 +21,7 @@ class Harmonic_Oscillator:
         m: oscillator mass
         sigma_x: additive noise to x (Brownian bombardment)
         sigma_v: additive noise to v (noise in force)
+        c_drive: drive coupling strenght (linearly scales F)
         '''        
         self.F = F
         self.gamma = gamma
@@ -28,6 +29,7 @@ class Harmonic_Oscillator:
         self.k = k
         self.sigma_x = sigma_x
         self.sigma_v = sigma_v
+        self.c_drive = c_drive
         
     def _equations(self, y, t):
         """
@@ -42,7 +44,7 @@ class Harmonic_Oscillator:
         """
         x, v = y
         dxdt = v 
-        dvdt = self.F(t) / self.m - self.k * x / self.m - self.gamma * v / self.m
+        dvdt = self.c_drive * self.F(t) / self.m - self.k * x / self.m - self.gamma * v / self.m
         return [dxdt, dvdt]        
     
     def run_without_noise(self, initial_condition, T, dt):
@@ -72,7 +74,7 @@ class Harmonic_Oscillator:
         for i in range(1, t.shape[0]):
             x_array[i] = x_array[i-1] + dt * v_array[i-1] \
                         + self.sigma_x * np.sqrt(dt) * np.random.normal()
-            v_array[i] = v_array[i-1] + dt * (self.F(t[i-1]) / self.m - self.k * x_array[i-1] / self.m - self.gamma * v_array[i-1] / self.m) \
+            v_array[i] = v_array[i-1] + dt * (self.c_drive * self.F(t[i-1]) / self.m - self.k * x_array[i-1] / self.m - self.gamma * v_array[i-1] / self.m) \
                         + self.sigma_v * np.sqrt(dt) * np.random.normal()
 
         return x_array, t
